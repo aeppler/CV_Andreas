@@ -1,0 +1,29 @@
+deep learning:
+	- before obtain predictions from deep neural network: preprocess data
+	
+	
+preprocess tasks involve:
+	- mean subtraction
+	- scaling by some factor
+
+blobFromImage:
+	- does preprocessing steps:
+		1. Mean subtraction
+		2. Scaling
+		3. optionally channel swapping
+	1. mean substraction: to help combat illumination changes in the input images in our dataset
+		- aid the CNN
+		- average pixel intensity for each of the red green and blue channels
+		- when image pass through network, the mean value for each channel  (RGB) is substracted 
+		  and normalized by dividing through scaling factor SIGMA
+	-blobFromImage creates 3-dimensional blob from image. 
+	 Optionally resizes and crops image from center, subtract mean values, 
+	 scales values by scalefactor, swap Blue and Red channels.
+	-blob: collection of images with same spatial dimensions
+	-syntax: blob = cv2.dnn.blobFromImage(image, scalefactor=1.0, size, mean, swapRB=True)
+		- scalefacotr: should be 1/SIGMA
+		- size: for most neural networks its 224x224 or 227x227 or 299x299
+		- mean: mean for every channel as 3-tuple (R, G, B)
+		-swapRB: normal Order is BGR. With true -> order = RGB
+		-blob: input image for network
+blobFromImageS: exactly the same but passing multiple images		
