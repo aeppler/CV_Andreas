@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 
@@ -8,11 +9,13 @@ Created on Thu Nov  8 09:20:50 2018
 """
 
 # import the necessary packages
+import sys
 from imutils.object_detection import non_max_suppression
 import numpy as np
 import pytesseract
 import argparse
 import cv2
+
 
 def decode_predictions(scores, geometry):
 	# grab the number of rows and columns from the scores volume, then
@@ -85,7 +88,9 @@ ap.add_argument("-p", "--padding", type=float, default=0.05,
 	help="amount of padding to add to each border of ROI")
 args = vars(ap.parse_args())
 
-cap = cv2.VideoCapture(0)
+#cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture("nvcamerasrc ! video/x-raw(memory:NVMM), width=(int)1280, height=(int)720,format=(string)I420, framerate=(fraction)30/1 ! nvvidconv flip-method=0 ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink")
+
 if cap.isOpened():
     windowName = "Default"
     cv2.namedWindow(windowName, cv2.WINDOW_NORMAL)
@@ -108,6 +113,13 @@ if cap.isOpened():
 
         # load the input image and grab the image dimensions
         #image = cv2.imread(args["image"])
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            
+        blur=cv2.GaussianBlur(gray,(7,7),1.5) #verschwommenes black-white
+            
+        
+        canny=cv2.Canny(blur,0,250) #canny filter
+            
         image = frame
         
         i=i+1
@@ -116,7 +128,7 @@ if cap.isOpened():
         
 
        
-        if key==49 or i==50:
+        if key==49 or i==2000:
         
             orig = image.copy()
             (origH, origW) = image.shape[:2]
@@ -232,7 +244,11 @@ if cap.isOpened():
             break;
         
         #imshow:
-        cv2.imshow(windowName,frame) 
+        name = "Press '1' for text recognition"
+        font = cv2.FONT_HERSHEY_PLAIN
+        cv2.putText(image, name, (18,30), font, 2.0, (32,32,32), 4, cv2.LINE_AA)  #Text in schwarz
+        cv2.putText(image, name, (19,30), font, 2.0, (240,240,240), 2, cv2.LINE_AA) #Text in weiss
+        cv2.imshow(windowName,image) 
 
 else:
     print "camera open failed"
