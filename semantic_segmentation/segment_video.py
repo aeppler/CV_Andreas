@@ -11,17 +11,17 @@ import cv2
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-m", "--model", required=True,
+ap.add_argument("-m", "--model", default="enet-cityscapes/enet-model.net",
 	help="path to deep learning segmentation model")
-ap.add_argument("-c", "--classes", required=True,
+ap.add_argument("-c", "--classes", default="enet-cityscapes/enet-classes.txt",
 	help="path to .txt file containing class labels")
-ap.add_argument("-v", "--video", required=True,
+ap.add_argument("-v", "--video", default="videos/massachusetts.mp4",
 	help="path to input video file")
-ap.add_argument("-o", "--output", required=True,
+ap.add_argument("-o", "--output", default="output/massachusetts_output.avi",
 	help="path to output video file")
 ap.add_argument("-s", "--show", type=int, default=1,
 	help="whether or not to display frame to screen")
-ap.add_argument("-l", "--colors", type=str,
+ap.add_argument("-l", "--colors", type=str, default="enet-cityscapes/enet-colors.txt",
 	help="path to .txt file containing colors for labels")
 ap.add_argument("-w", "--width", type=int, default=500,
 	help="desired width (in pixels) of input image")
