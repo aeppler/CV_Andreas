@@ -17,6 +17,8 @@ import argparse
 import cv2
 
 
+
+
 def decode_predictions(scores, geometry):
 	# grab the number of rows and columns from the scores volume, then
 	# initialize our set of bounding box rectangles and corresponding
